@@ -192,6 +192,144 @@ export type Database = {
           },
         ]
       }
+      class_groups: {
+        Row: {
+          academic_year: number
+          created_at: string
+          grade: string
+          id: string
+          level: Database["public"]["Enums"]["enrollment_level"]
+          school_id: string
+          section: string
+          updated_at: string
+        }
+        Insert: {
+          academic_year: number
+          created_at?: string
+          grade: string
+          id?: string
+          level: Database["public"]["Enums"]["enrollment_level"]
+          school_id: string
+          section: string
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: number
+          created_at?: string
+          grade?: string
+          id?: string
+          level?: Database["public"]["Enums"]["enrollment_level"]
+          school_id?: string
+          section?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_groups_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_offerings: {
+        Row: {
+          class_group_id: string
+          course_id: string
+          created_at: string
+          id: string
+          school_id: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          class_group_id: string
+          course_id: string
+          created_at?: string
+          id?: string
+          school_id: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          class_group_id?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          school_id?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_offerings_class_group_id_fkey"
+            columns: ["class_group_id"]
+            isOneToOne: false
+            referencedRelation: "class_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_offerings_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_offerings_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_offerings_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "staff_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          school_id: string
+          short_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          school_id: string
+          short_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          school_id?: string
+          short_code?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courses_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_series: {
         Row: {
           active: boolean
@@ -267,6 +405,96 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      game_attempts: {
+        Row: {
+          answered_at: string
+          correct_answer: string
+          given_answer: string
+          id: string
+          is_correct: boolean
+          question: Json
+          recorded_by: string | null
+          school_id: string
+          seed: number
+          session_id: string
+          skill_id: string
+          student_id: string
+          tag: string | null
+        }
+        Insert: {
+          answered_at?: string
+          correct_answer: string
+          given_answer: string
+          id?: string
+          is_correct: boolean
+          question: Json
+          recorded_by?: string | null
+          school_id: string
+          seed: number
+          session_id: string
+          skill_id: string
+          student_id: string
+          tag?: string | null
+        }
+        Update: {
+          answered_at?: string
+          correct_answer?: string
+          given_answer?: string
+          id?: string
+          is_correct?: boolean
+          question?: Json
+          recorded_by?: string | null
+          school_id?: string
+          seed?: number
+          session_id?: string
+          skill_id?: string
+          student_id?: string
+          tag?: string | null
+        }
+        Relationships: []
+      }
+      game_sessions: {
+        Row: {
+          answered: number
+          correct_count: number
+          id: string
+          mastered_at: string | null
+          recorded_by: string | null
+          school_id: string
+          score: number
+          skill_id: string
+          started_at: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          answered?: number
+          correct_count?: number
+          id?: string
+          mastered_at?: string | null
+          recorded_by?: string | null
+          school_id: string
+          score?: number
+          skill_id: string
+          started_at?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          answered?: number
+          correct_count?: number
+          id?: string
+          mastered_at?: string | null
+          recorded_by?: string | null
+          school_id?: string
+          score?: number
+          skill_id?: string
+          started_at?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       guardians: {
         Row: {
@@ -976,6 +1204,377 @@ export type Database = {
           },
         ]
       }
+      quiz_question_options: {
+        Row: {
+          created_at: string
+          id: string
+          is_correct: boolean
+          label: string
+          order_index: number
+          question_id: string
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          label: string
+          order_index?: number
+          question_id: string
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          label?: string
+          order_index?: number
+          question_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_question_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_questions: {
+        Row: {
+          created_at: string
+          id: string
+          order_index: number
+          quiz_id: string
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          quiz_id: string
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          quiz_id?: string
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_responses: {
+        Row: {
+          answered_at: string
+          id: string
+          option_id: string
+          question_id: string
+          recorded_by: string | null
+          session_id: string
+          student_id: string
+        }
+        Insert: {
+          answered_at?: string
+          id?: string
+          option_id: string
+          question_id: string
+          recorded_by?: string | null
+          session_id: string
+          student_id: string
+        }
+        Update: {
+          answered_at?: string
+          id?: string
+          option_id?: string
+          question_id?: string
+          recorded_by?: string | null
+          session_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_responses_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_question_options"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_responses_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "staff_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_responses_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_responses_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_sessions: {
+        Row: {
+          closed_at: string | null
+          course_offering_id: string
+          created_at: string
+          current_question_id: string | null
+          id: string
+          opened_at: string | null
+          quiz_id: string
+          status: Database["public"]["Enums"]["quiz_session_status"]
+        }
+        Insert: {
+          closed_at?: string | null
+          course_offering_id: string
+          created_at?: string
+          current_question_id?: string | null
+          id?: string
+          opened_at?: string | null
+          quiz_id: string
+          status?: Database["public"]["Enums"]["quiz_session_status"]
+        }
+        Update: {
+          closed_at?: string | null
+          course_offering_id?: string
+          created_at?: string
+          current_question_id?: string | null
+          id?: string
+          opened_at?: string | null
+          quiz_id?: string
+          status?: Database["public"]["Enums"]["quiz_session_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_sessions_course_offering_id_fkey"
+            columns: ["course_offering_id"]
+            isOneToOne: false
+            referencedRelation: "course_offerings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_sessions_current_question_id_fkey"
+            columns: ["current_question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_sessions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          school_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          school_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          school_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "staff_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quizzes_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_activities: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          school_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          school_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          school_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_activities_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_periods: {
+        Row: {
+          created_at: string
+          end_time: string
+          id: string
+          is_break: boolean
+          label: string | null
+          school_id: string
+          start_time: string
+        }
+        Insert: {
+          created_at?: string
+          end_time: string
+          id?: string
+          is_break?: boolean
+          label?: string | null
+          school_id: string
+          start_time: string
+        }
+        Update: {
+          created_at?: string
+          end_time?: string
+          id?: string
+          is_break?: boolean
+          label?: string | null
+          school_id?: string
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_periods_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_slots: {
+        Row: {
+          activity_id: string | null
+          classroom: string | null
+          course_offering_id: string | null
+          created_at: string
+          day_of_week: number
+          id: string
+          period_id: string
+          school_id: string
+        }
+        Insert: {
+          activity_id?: string | null
+          classroom?: string | null
+          course_offering_id?: string | null
+          created_at?: string
+          day_of_week: number
+          id?: string
+          period_id: string
+          school_id: string
+        }
+        Update: {
+          activity_id?: string | null
+          classroom?: string | null
+          course_offering_id?: string | null
+          created_at?: string
+          day_of_week?: number
+          id?: string
+          period_id?: string
+          school_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_slots_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_slots_course_offering_id_fkey"
+            columns: ["course_offering_id"]
+            isOneToOne: false
+            referencedRelation: "course_offerings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_slots_period_id_fkey"
+            columns: ["period_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_slots_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       schools: {
         Row: {
           created_at: string
@@ -1167,6 +1766,7 @@ export type Database = {
       students: {
         Row: {
           birth_date: string | null
+          class_group_id: string | null
           code: string
           created_at: string
           document_number: string | null
@@ -1192,6 +1792,7 @@ export type Database = {
         }
         Insert: {
           birth_date?: string | null
+          class_group_id?: string | null
           code: string
           created_at?: string
           document_number?: string | null
@@ -1217,6 +1818,7 @@ export type Database = {
         }
         Update: {
           birth_date?: string | null
+          class_group_id?: string | null
           code?: string
           created_at?: string
           document_number?: string | null
@@ -1241,6 +1843,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "students_class_group_id_fkey"
+            columns: ["class_group_id"]
+            isOneToOne: false
+            referencedRelation: "class_groups"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "students_school_id_fkey"
             columns: ["school_id"]
@@ -1564,6 +2173,11 @@ export type Database = {
         }
         Returns: string
       }
+      current_staff_id: { Args: { target_school_id: string }; Returns: string }
+      has_class_group_access: {
+        Args: { target_class_group_id: string }
+        Returns: boolean
+      }
       has_school_access: {
         Args: { target_school_id: string }
         Returns: boolean
@@ -1615,6 +2229,7 @@ export type Database = {
       mfa_factor_type: "device_trust" | "email_otp" | "totp" | "sms"
       platform_staff_role: "superadmin" | "support"
       pricing_model: "free" | "per_student" | "fixed"
+      quiz_session_status: "borrador" | "activo" | "cerrado"
       relationship_type:
         | "papa"
         | "mama"
@@ -1651,12 +2266,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1680,11 +2295,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1705,11 +2320,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1730,11 +2345,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1747,11 +2362,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1786,6 +2401,7 @@ export const Constants = {
       mfa_factor_type: ["device_trust", "email_otp", "totp", "sms"],
       platform_staff_role: ["superadmin", "support"],
       pricing_model: ["free", "per_student", "fixed"],
+      quiz_session_status: ["borrador", "activo", "cerrado"],
       relationship_type: [
         "papa",
         "mama",

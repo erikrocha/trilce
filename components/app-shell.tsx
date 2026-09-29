@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BuildingIcon,
+  CalendarDaysIcon,
   CircleDollarSignIcon,
+  ClipboardListIcon,
+  Gamepad2Icon,
   IdCardIcon,
   LayoutDashboardIcon,
   LogOutIcon,
@@ -43,6 +46,9 @@ const STAFF_NAV: NavItem[] = [
   { href: "/alumnos", label: "Alumnos", icon: UsersIcon },
   { href: "/apoderados", label: "Apoderados", icon: UserRoundIcon },
   { href: "/personal", label: "Personal", icon: IdCardIcon },
+  { href: "/horario", label: "Horario", icon: CalendarDaysIcon },
+  { href: "/cuestionarios", label: "Cuestionarios", icon: ClipboardListIcon },
+  { href: "/juegos", label: "Juegos", icon: Gamepad2Icon },
   { href: "/cobros", label: "Cobros", icon: ReceiptTextIcon },
   {
     href: "/registrar-pago",
@@ -60,10 +66,15 @@ const STAFF_NAV: NavItem[] = [
 const DOCENTE_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/alumnos", label: "Alumnos", icon: UsersIcon },
+  { href: "/horario", label: "Horario", icon: CalendarDaysIcon },
+  { href: "/cuestionarios", label: "Cuestionarios", icon: ClipboardListIcon },
+  { href: "/juegos", label: "Juegos", icon: Gamepad2Icon },
 ];
 
 const FAMILY_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
+  { href: "/horario", label: "Horario", icon: CalendarDaysIcon },
+  { href: "/juegos", label: "Juegos", icon: Gamepad2Icon },
 ];
 
 const PLATFORM_NAV: NavItem[] = [
