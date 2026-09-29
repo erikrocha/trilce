@@ -124,7 +124,7 @@ export function AppShell({
 
   return (
     <div className="flex min-h-screen">
-      <aside className="flex w-56 shrink-0 flex-col border-r border-border bg-card">
+      <aside className="flex w-56 print:hidden shrink-0 flex-col border-r border-border bg-card">
         <div className="flex h-14 items-center border-b border-border px-4">
           <span className="text-sm font-medium">Trilce</span>
         </div>
@@ -151,7 +151,7 @@ export function AppShell({
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between border-b border-border px-6">
+        <header className="flex h-14 print:hidden items-center justify-between border-b border-border px-6">
           <span className="text-sm font-medium text-secondary-foreground">
             {schoolName ?? "Plataforma"}
           </span>
@@ -198,7 +198,7 @@ export function AppShell({
           </div>
         </header>
 
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-6 print:p-0">{children}</main>
       </div>
     </div>
   );

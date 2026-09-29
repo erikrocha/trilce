@@ -42,6 +42,7 @@ export default async function SessionPage(
         .from("students")
         .select("id, first_names, paternal_surname, code")
         .eq("class_group_id", classGroupId)
+        .neq("status", "inactivo")
         .order("paternal_surname", { ascending: true })
     : { data: [] };
 

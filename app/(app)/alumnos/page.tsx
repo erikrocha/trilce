@@ -13,6 +13,8 @@ export default async function AlumnosPage() {
     .order("paternal_surname", { ascending: true });
 
   const canWrite = ctx.role === "admin" || ctx.role === "administrativo";
+  // Borrar un alumno con cobros/pagos arrastra documentos tributarios: solo admin.
+  const canForceDelete = ctx.role === "admin";
 
   return (
     <div className="flex flex-col gap-4">
@@ -20,11 +22,14 @@ export default async function AlumnosPage() {
         <div>
           <h1 className="text-lg font-medium">Alumnos</h1>
           <p className="text-sm text-muted-foreground">
-            {students?.length ?? 0} alumno(s) registrados
+            {(students ?? []).filter((s) => s.status !== "inactivo").length}{" "}
+            alumno(s) registrados
           </p>
         </div>
       </div>
-      <StudentList students={students ?? []} canWrite={canWrite} />
+      <StudentList students={students ?? []} canWrite={canWrite}
+        canForceDelete={canForceDelete}
+      />
     </div>
   );
 }

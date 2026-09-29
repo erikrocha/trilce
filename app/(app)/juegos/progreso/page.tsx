@@ -21,6 +21,7 @@ export default async function ProgresoPage(props: PageProps<"/juegos/progreso">)
     : await supabase
         .from("students")
         .select("id, code, first_names, paternal_surname")
+        .neq("status", "inactivo")
         .order("paternal_surname", { ascending: true })
         .limit(500);
   const students = (visible ?? []).map((s) => ({ id: s.id, label: `${s.paternal_surname} ${s.first_names} (${s.code})` }));

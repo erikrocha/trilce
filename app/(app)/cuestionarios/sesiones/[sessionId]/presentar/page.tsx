@@ -33,6 +33,7 @@ export default async function PresentarPage(
         .from("students")
         .select("id", { count: "exact", head: true })
         .eq("class_group_id", classGroupId)
+        .neq("status", "inactivo")
     : { count: 0 };
 
   const sortedQuestions = (questions ?? []).map((q) => ({

@@ -29,6 +29,7 @@ export default async function TarjetasPage(
         .from("students")
         .select("id, code, first_names, paternal_surname, maternal_surname")
         .eq("class_group_id", classGroupId)
+        .neq("status", "inactivo")
         .order("paternal_surname", { ascending: true })
     : { data: [] };
 

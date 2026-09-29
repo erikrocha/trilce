@@ -21,7 +21,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Database } from "@/lib/supabase/database.types";
-import { createStudent, updateStudent, type FormState } from "./actions";
+import {
+  createStudent,
+  updateStudent,
+  type FormState,
+  type StudentCredentials,
+} from "./actions";
 import {
   DOCUMENT_TYPE_LABELS,
   LEVEL_LABELS,
@@ -31,8 +36,15 @@ import {
 import { GuardiansTab } from "./guardians-tab";
 import { OtherDataTab } from "./other-data-tab";
 import { CobrosTab } from "./cobros-tab";
+import { DeleteStudentDialog } from "./delete-student-dialog";
 
 type Student = Database["public"]["Tables"]["students"]["Row"];
+
+export type CreatedInfo = {
+  studentId: string;
+  credentials?: StudentCredentials;
+  loginError?: string;
+};
 
 export function StudentSheet({
   student,
@@ -40,12 +52,16 @@ export function StudentSheet({
   onOpenChange,
   onCreated,
   readOnly,
+  canForceDelete,
+  createdInfo,
 }: {
   student: Student | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated: (student: Student) => void;
+  onCreated: (student: Student, info: CreatedInfo) => void;
   readOnly: boolean;
+  canForceDelete: boolean;
+  createdInfo: CreatedInfo | null;
 }) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -55,6 +71,12 @@ export function StudentSheet({
             key={student?.id ?? "new"}
             student={student}
             readOnly={readOnly}
+            canForceDelete={canForceDelete}
+            createdInfo={
+              createdInfo && createdInfo.studentId === student?.id
+                ? createdInfo
+                : null
+            }
             onSaved={() => onOpenChange(false)}
             onCreated={onCreated}
           />
@@ -67,13 +89,17 @@ export function StudentSheet({
 function StudentSheetBody({
   student,
   readOnly,
+  canForceDelete,
+  createdInfo,
   onSaved,
   onCreated,
 }: {
   student: Student | null;
   readOnly: boolean;
+  canForceDelete: boolean;
+  createdInfo: CreatedInfo | null;
   onSaved: () => void;
-  onCreated: (student: Student) => void;
+  onCreated: (student: Student, info: CreatedInfo) => void;
 }) {
   const action = student
     ? updateStudent.bind(null, student.id)
@@ -94,7 +120,11 @@ function StudentSheetBody({
     if (state && "student" in state) {
       // El alumno se acaba de crear: dejamos el panel abierto pero pasamos a
       // modo edición (recién ahí existe un student_id para vincular apoderados).
-      onCreated(state.student);
+      onCreated(state.student, {
+        studentId: state.student.id,
+        credentials: state.credentials,
+        loginError: state.loginError,
+      });
       return;
     }
     onSaved();
@@ -113,6 +143,32 @@ function StudentSheetBody({
             : "Completa los datos del alumno."}
         </SheetDescription>
       </SheetHeader>
+
+      {createdInfo?.credentials && (
+        <div className="mx-4 flex flex-col gap-1 rounded-lg border border-border bg-muted/50 p-3 text-sm">
+          <span className="font-medium">Acceso creado</span>
+          <span>
+            Usuario:{" "}
+            <span className="font-mono">{createdInfo.credentials.username}</span>
+          </span>
+          <span>
+            Correo:{" "}
+            <span className="font-mono">{createdInfo.credentials.email}</span>
+          </span>
+          <span>
+            Contraseña temporal:{" "}
+            <span className="font-mono">
+              {createdInfo.credentials.temp_password}
+            </span>
+          </span>
+          <span className="text-xs text-muted-foreground">
+            También aparece en Alumnos → Credenciales para imprimir.
+          </span>
+        </div>
+      )}
+      {createdInfo?.loginError && (
+        <p className="mx-4 text-sm text-destructive">{createdInfo.loginError}</p>
+      )}
 
       <Tabs defaultValue="datos" className="flex-1 overflow-y-auto px-4">
         <TabsList variant="line">
@@ -321,7 +377,16 @@ function StudentSheetBody({
       </Tabs>
 
       {!readOnly && (
-        <SheetFooter>
+        <SheetFooter className="flex-row justify-between">
+          {student ? (
+            <DeleteStudentDialog
+              student={student}
+              canForceDelete={canForceDelete}
+              onDeleted={onSaved}
+            />
+          ) : (
+            <span />
+          )}
           <Button type="submit" form="student-form" disabled={pending}>
             {pending ? "Guardando…" : "Guardar"}
           </Button>

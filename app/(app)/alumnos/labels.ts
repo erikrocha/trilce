@@ -9,4 +9,5 @@ export const STUDENT_STATUS_LABELS: Record<string, string> = {
   activo: "Activo",
   retirado: "Retirado",
   egresado: "Egresado",
+  inactivo: "Inactivo",
 };

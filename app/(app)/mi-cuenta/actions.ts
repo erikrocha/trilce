@@ -45,8 +45,14 @@ export async function updatePassword(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: "No se pudo cambiar la contraseña." };
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.updateUser({ password });
+  if (error || !user) return { error: "No se pudo cambiar la contraseña." };
+
+  // La contraseña temporal impresa deja de ser válida: se retira de la lista.
+  await supabase.from("initial_credentials").delete().eq("user_id", user.id);
 
   return undefined;
 }

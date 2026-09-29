@@ -93,6 +93,7 @@ export function RegisterPaymentFlow({
         .or(
           `first_names.ilike.%${query}%,paternal_surname.ilike.%${query}%,code.ilike.%${query}%`
         )
+        .neq("status", "inactivo")
         .limit(8)
         .then(({ data }) => {
           if (!cancelled) setResults(data ?? []);

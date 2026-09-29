@@ -18,9 +18,10 @@ export default async function CobrosPage(props: PageProps<"/cobros">) {
   const { data: invoices } = await supabase
     .from("invoices")
     .select(
-      "*, students(code, paternal_surname, maternal_surname, first_names)"
+      "*, students!inner(code, paternal_surname, maternal_surname, first_names, status)"
     )
     .eq("school_id", ctx.schoolId!)
+    .neq("students.status", "inactivo")
     .eq("academic_year", year)
     .order("due_date", { ascending: true });
 

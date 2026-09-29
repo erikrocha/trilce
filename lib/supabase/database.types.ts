@@ -576,6 +576,35 @@ export type Database = {
           },
         ]
       }
+      initial_credentials: {
+        Row: {
+          created_at: string
+          school_id: string
+          temp_password: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          school_id: string
+          temp_password: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          school_id?: string
+          temp_password?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initial_credentials_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoices: {
         Row: {
           academic_year: number
@@ -1579,6 +1608,7 @@ export type Database = {
         Row: {
           created_at: string
           deleted_at: string | null
+          email_domain: string | null
           id: string
           name: string
           school_type: Database["public"]["Enums"]["school_type"]
@@ -1593,6 +1623,7 @@ export type Database = {
         Insert: {
           created_at?: string
           deleted_at?: string | null
+          email_domain?: string | null
           id?: string
           name: string
           school_type?: Database["public"]["Enums"]["school_type"]
@@ -1607,6 +1638,7 @@ export type Database = {
         Update: {
           created_at?: string
           deleted_at?: string | null
+          email_domain?: string | null
           id?: string
           name?: string
           school_type?: Database["public"]["Enums"]["school_type"]
@@ -2051,6 +2083,25 @@ export type Database = {
       }
     }
     Views: {
+      student_initial_credentials: {
+        Row: {
+          code: string | null
+          created_at: string | null
+          email: string | null
+          first_names: string | null
+          grade: string | null
+          level: Database["public"]["Enums"]["enrollment_level"] | null
+          maternal_surname: string | null
+          paternal_surname: string | null
+          school_id: string | null
+          section: string | null
+          status: Database["public"]["Enums"]["student_status"] | null
+          student_id: string | null
+          temp_password: string | null
+          username: string | null
+        }
+        Relationships: []
+      }
       student_invoices_display: {
         Row: {
           academic_year: number | null
@@ -2151,6 +2202,14 @@ export type Database = {
       }
     }
     Functions: {
+      provision_student_login: {
+        Args: { p_student_id: string }
+        Returns: {
+          email: string
+          temp_password: string
+          username: string
+        }[]
+      }
       create_membership_login: {
         Args: {
           p_email: string
@@ -2244,7 +2303,7 @@ export type Database = {
       school_type: "publico" | "privado"
       sex_type: "M" | "F"
       staff_type: "docente" | "administrativo"
-      student_status: "activo" | "retirado" | "egresado"
+      student_status: "activo" | "retirado" | "egresado" | "inactivo"
       subscription_status:
         | "trialing"
         | "active"
@@ -2417,7 +2476,7 @@ export const Constants = {
       school_type: ["publico", "privado"],
       sex_type: ["M", "F"],
       staff_type: ["docente", "administrativo"],
-      student_status: ["activo", "retirado", "egresado"],
+      student_status: ["activo", "retirado", "egresado", "inactivo"],
       subscription_status: [
         "trialing",
         "active",
